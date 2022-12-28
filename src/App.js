@@ -1,23 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import "./styles/App.scss";
+import { Outlet, Route, Routes } from "react-router-dom";
+
+// components
+import PageContainer from "./components/Containers/PageContainer";
+import Navbar from "./components/Navbar/Navbar";
+import MobileNavbar from "./components/Navbar/MobileNavbar";
+import MainContainer from "./components/Containers/MainContainer";
+
+// pages
+import Auth from "./pages/auth/Auth";
+import Home from "./pages/auth/Home/Home";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <PageContainer optionClass={"pageContainer"}>
+        <Navbar />
+        <div className="mobileMenu">
+          <MobileNavbar />
+        </div>
+        <Routes>
+          {/* AUTH PAGE */}
+          <Route path="/auth" element={<Auth />} />
+          {/* PROTECTED ROUTES */}
+          <Route element={<Outlet />}>
+            {/* HOME */}
+            <Route path="/" element={<Home />} />
+            {/* 404 */}
+            <Route
+              path="/*"
+              element={
+                <MainContainer>
+                  <span style={{ fontSize: "1.2rem" }}>404 Page Not Found</span>
+                </MainContainer>
+              }
+            />
+          </Route>
+        </Routes>
+      </PageContainer>
     </div>
   );
 }
